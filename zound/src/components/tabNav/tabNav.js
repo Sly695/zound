@@ -1,16 +1,15 @@
 import { StyleSheet } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-
-import ListPage from '../../pages/listPage';
 import AccountPage from '../../pages/accountPage';
+import PlayingPage from '../../pages/playingPage';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const TabNav = ({ modalAuth, setModalAuth }) => {
+
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -36,7 +35,7 @@ const TabNav = ({ modalAuth, setModalAuth }) => {
                 inactiveTintColor: '#dfe6e9',
             }}
         >
-            <Tab.Screen name="Liste" modalAuth={modalAuth} setModalAuth={setModalAuth} component={ListPage} />
+            <Tab.Screen name="Liste" modalAuth={modalAuth} setModalAuth={setModalAuth} component={PlayingPage} />
             <Tab.Screen name="Compte" component={AccountPage} />
         </Tab.Navigator>
     );

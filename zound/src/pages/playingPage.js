@@ -1,49 +1,38 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { View, StyleSheet, Image, Linking } from 'react-native'
 import { USER_LIST } from '../constants/tracks';
 import TrackBottomSheet from '../components/bottomSheet/trackBottomSheet/trackBottomSheet';
 import LoginBottomSheet from '../components/bottomSheet/loginBottomSheet/loginBottomSheet';
 import OtherTrackList from '../components/trackList/otherTrackList/othertrackList';
 import UserTrackList from '../components/trackList/userTrackList/userTrackList';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-// import { clearAllCookies } from 'react-native-cookies';
+import ZoundLogoSvg from '../../assets/zound.svg'
 
-const ListPage = () => {
+
+const PlayingPage = () => {
 
 
     const [selectSong, setSelectSong] = useState("");
-    const [userSong, setUserSong] = useState();
     const [songPlaying, setSongPlaying] = useState(false)
     const trackBottomSheetRef = useRef(null);
     const loginBottomSheetRef = useRef(null);
 
-    useEffect(() => {
-        presentLoginBottomSheet();
-    }, [])
 
-    const presentLoginBottomSheet = async () => {
-        const access_token = await AsyncStorage.getItem('accessToken');
-        if (!access_token) {
-            loginBottomSheetRef.current?.present();
-        }
-    };
 
-    const showModal = async (song) => {
-        setSelectSong(song);
+    const showModal = async (userTrack) => {
+        setSelectSong(userTrack);
         await trackBottomSheetRef.current?.present();
         await trackBottomSheetRef.current.present();
-
     };
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Image source={require('../../assets/zound.png')} />
+                <ZoundLogoSvg />
             </View>
             <View style={styles.section}>
                 <View style={styles.trackList}>
                     {
-       
+
                         USER_LIST.map((song, i) => {
                             return (
                                 <OtherTrackList song={song} key={i} />
@@ -54,10 +43,10 @@ const ListPage = () => {
                 </View>
                 <TrackBottomSheet selectSong={selectSong} trackBottomSheetRef={trackBottomSheetRef} />
                 <View style={[styles.trackUser, { display: songPlaying ? "block" : "none" }]}>
-                    <UserTrackList showModal={showModal} setSongPlaying={setSongPlaying} />
+                    <UserTrackList showModal={showModal} setSongPlaying={setSongPlaying} selectSong={selectSong} />
                 </View>
             </View>
-            <LoginBottomSheet loginBottomSheetRef={loginBottomSheetRef} setUserSong={setUserSong} />
+            <LoginBottomSheet loginBottomSheetRef={loginBottomSheetRef} />
         </View>
 
 
@@ -112,4 +101,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ListPage
+export default PlayingPage

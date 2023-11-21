@@ -88,7 +88,9 @@ router.get('/callback', async function (req, res, next) {
           access_token: access_token,
           refresh_token: refresh_token,
           expires_in: expires_in,
-          body: JSON.stringify(body)
+          body: JSON.stringify(body),
+          error: error, 
+          response: response
         }));
       });
 
@@ -107,8 +109,9 @@ router.get('/callback', async function (req, res, next) {
 
 
 router.get('/getToken', (req, res) => {
-  const access_token = req.query.access_token, refresh_token = req.query.refresh_token, expires_in = req.query.expires_in, user_data = req.query.body;
-  res.json({ access_token: access_token, refresh_token: refresh_token, expires_in: expires_in, userData: JSON.parse(user_data)})
+  const access_token = req.query.access_token, refresh_token = req.query.refresh_token, expires_in = req.query.expires_in, user_data = req.query.body, response = req.query.response, error = req.query.error;
+  
+  res.json({ access_token: access_token, refresh_token: refresh_token, expires_in: expires_in, userData: JSON.parse(user_data), response: response, error: error})
 })
 
 router.get('/getCurrentlyPlaying', (req, res) => {

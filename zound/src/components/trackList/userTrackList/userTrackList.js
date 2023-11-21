@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { List } from 'react-native-paper'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const UserTrackList = ({ showModal, setSongPlaying }) => {
+const UserTrackList = ({ showModal, setSongPlaying, selectSong }) => {
 
     const [userTrack, setUserTrack] = useState();
 
-    useEffect(() => {
-        console.log('Effect is running');
-        getCurrentlyPlaying();
-    }, [/* dependencies */]);
-    
+    useEffect(async () => {
+        await getCurrentlyPlaying();
+        console.log("currently playing done")
+    }, []);
+
 
     async function getCurrentlyPlaying() {
 
@@ -31,10 +31,9 @@ const UserTrackList = ({ showModal, setSongPlaying }) => {
                     await AsyncStorage.setItem('accessToken', response.access_token)
                     await AsyncStorage.setItem('refreshToken', response.refresh_token)
                 } else {
-                    console.log(response)
+                    console.error(response)
                 }
             }
-
 
         } catch (error) {
             console.log(error)
@@ -49,7 +48,10 @@ const UserTrackList = ({ showModal, setSongPlaying }) => {
                     description={userTrack.song.item.artists[0].name}
                     left={props => <List.Icon {...props} icon="album" />}
                     right={props => <List.Icon {...props} icon="equalizer" />}
-                    onPress={() => showModal(userTrack)}
+                    onPress={() => {
+                        showModal(userTrack)
+                        getCurrentlyPlaying()
+                    }}
                 />
             }
         </>

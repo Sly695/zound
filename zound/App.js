@@ -6,11 +6,12 @@ import TabNav from './src/components/tabNav/tabNav';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { View } from 'react-native';
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import AuthPage from "./src/pages/authPage";
+import { useState } from 'react'
 
 const Stack = createStackNavigator();
 
 export default function App() {
-
 
   return (
     <GestureHandlerRootView>
@@ -19,6 +20,7 @@ export default function App() {
           <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
               <Stack.Screen name="LoginPage" component={LoginPage} />
+              <Stack.Screen name="AuthPage" component={AuthPage} />
               <Stack.Screen name="TabNav" component={TabNav} />
             </Stack.Navigator>
           </NavigationContainer>

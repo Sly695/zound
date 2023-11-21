@@ -1,19 +1,20 @@
-import React, { useEffect } from 'react'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import React from 'react'
 import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import ZoundLogoSvg from '../../assets/zound.svg'
+
 
 const HomePage = (props) => {
     return (
         <View style={styles.container}>
             <View style={{ alignItems: "center", justifyContent: 'center', height: '70%' }}>
                 <Text>Va plus vite que la musique avec</Text>
-                <Image source={require('../../assets/zound.png')} />
+                <ZoundLogoSvg />
             </View>
             <View>
-                <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('TabNav')}>
+                <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('AuthPage')}>
                     <Text style={styles.buttonText}>Se connecter</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button2} onPress={() => props.navigation.navigate('TabNav')}>
+                <TouchableOpacity style={styles.button2} onPress={() => props.navigation.navigate('AuthPage')}>
                     <Text style={styles.buttonText2}>S'inscrire</Text>
                 </TouchableOpacity>
             </View>

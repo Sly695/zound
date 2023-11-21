@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import BottomSheet, { BottomSheetModal, BottomSheetBackdrop, BottomSheetScrollView } from '@gorhom/bottom-sheet';
-import { Text, Button, View, StyleSheet, Image, TouchableOpacity, Linking } from 'react-native'
+import { Linking, Text, Button, View, StyleSheet, Image, TouchableOpacity } from 'react-native'
 
 const TrackBottomSheet = ({ selectSong, trackBottomSheetRef }) => {
 
@@ -16,6 +16,9 @@ const TrackBottomSheet = ({ selectSong, trackBottomSheetRef }) => {
         )
     }, []);
 
+    async function redirectModal(externalUrl) {
+        await Linking.openURL(externalUrl);
+    }
 
     return (
         <>
@@ -35,11 +38,13 @@ const TrackBottomSheet = ({ selectSong, trackBottomSheetRef }) => {
                                 <Text style={styles.songartist}>{selectSong.song.item.artists[0].name}</Text>
                                 <Text style={styles.songname}>{selectSong.song.item.name}</Text>
                             </View>
-                            <View style={styles.buttonwrap}>
-                                <TouchableOpacity style={styles.button} onPress={() => (props.navigation.navigate('HomePage'), redirectModal(selectSong.url))}>
-                                    <Text style={styles.buttonText2}>Écouter</Text>
-                                </TouchableOpacity>
-                            </View>
+                            {/* Cette fonctionnalité est destiné aux sons joués pour les autres utilisateurs
+                                <View style={styles.buttonwrap}>
+                                    <TouchableOpacity style={styles.button} onPress={() => redirectModal(selectSong.song.item.uri)}>
+                                        <Text style={styles.buttonText2}>Écouter</Text>
+                                    </TouchableOpacity>
+                                </View> 
+                            */}
                         </View>
                     </BottomSheetModal>
                 </View>
@@ -127,7 +132,7 @@ const styles = StyleSheet.create({
         padding: 20,
         boxSizing: 'border-box',
         backgroundColor: "#C9F701",
-        
+
     },
 });
 

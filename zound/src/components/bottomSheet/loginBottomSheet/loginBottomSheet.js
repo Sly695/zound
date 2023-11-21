@@ -1,12 +1,14 @@
 import React, { useCallback, useMemo } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { BottomSheetModal, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
-import { SafeAreaView, View, StyleSheet } from 'react-native';
+import { SafeAreaView, Text, View, StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginBottomSheet = ({ loginBottomSheetRef }) => {
 
   const snapPoints = useMemo(() => ["90%"]);
+  const navigation = useNavigation();
 
   const renderBackdrop = useCallback((props) => {
     return (
@@ -18,7 +20,6 @@ const LoginBottomSheet = ({ loginBottomSheetRef }) => {
     )
   }, []);
 
-
   async function handleNavigationStateChange(navState) {
     const fetchAPI = navState.url
     const rawResponse = await fetch(fetchAPI);
@@ -27,8 +28,12 @@ const LoginBottomSheet = ({ loginBottomSheetRef }) => {
       await AsyncStorage.setItem('spotifyUser', JSON.stringify(response))
       await AsyncStorage.setItem('accessToken', response.access_token)
       await AsyncStorage.setItem('refreshToken', response.refresh_token)
+      navigation.navigate('TabNav')
+
     }
   };
+
+
 
   return (
     <View style={styles.BottomSheetContainer} >
@@ -42,10 +47,14 @@ const LoginBottomSheet = ({ loginBottomSheetRef }) => {
       >
         <SafeAreaView style={styles.container} >
           <WebView
+            incognito={true}
             source={{ uri: 'http://192.168.1.17:3000/login' }}
             onNavigationStateChange={handleNavigationStateChange}
-            style={{ flex: 1, backgroundColor: '#000' }}
-          />
+            startInLoadingState
+            useWebKit={true}
+            style={styles.webview}
+          /* Does not store any data within the lifetime of the WebView. */
+          ><Text>OUI</Text></WebView>
         </SafeAreaView>
       </BottomSheetModal>
     </View>
@@ -55,6 +64,10 @@ const LoginBottomSheet = ({ loginBottomSheetRef }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+
+  webview: {
+    backgroundColor: "#000",
   },
   BottomSheetContainer: {
     flex: 1,
