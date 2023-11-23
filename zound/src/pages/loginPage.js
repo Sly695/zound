@@ -1,9 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import ZoundLogoSvg from '../../assets/zound.svg'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 const HomePage = (props) => {
+    useEffect( async () => {
+        const access_token = await AsyncStorage.getItem('accessToken')
+
+        console.log(access_token)
+    }, [])
+
     return (
         <View style={styles.container}>
             <View style={{ alignItems: "center", justifyContent: 'center', height: '70%' }}>

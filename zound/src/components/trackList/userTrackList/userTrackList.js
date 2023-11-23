@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { List } from 'react-native-paper'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const UserTrackList = ({ showModal, setSongPlaying, selectSong }) => {
+const UserTrackList = ({ showModal, setSongPlaying, selectSong, refreshing }) => {
 
     const [userTrack, setUserTrack] = useState();
 
-    useEffect(async () => {
-        await getCurrentlyPlaying();
-        console.log("currently playing done")
-    }, []);
+    useEffect( () => {
+        getCurrentlyPlaying();
+    }, [refreshing]);
 
 
     async function getCurrentlyPlaying() {
@@ -36,9 +35,11 @@ const UserTrackList = ({ showModal, setSongPlaying, selectSong }) => {
             }
 
         } catch (error) {
-            console.log(error)
+            console.log({"error": error})
         }
     }
+
+
 
     return (
         <>
@@ -50,7 +51,6 @@ const UserTrackList = ({ showModal, setSongPlaying, selectSong }) => {
                     right={props => <List.Icon {...props} icon="equalizer" />}
                     onPress={() => {
                         showModal(userTrack)
-                        getCurrentlyPlaying()
                     }}
                 />
             }

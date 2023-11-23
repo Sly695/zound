@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
-import React, { useCallback, useRef, useState } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, use } from "react-native"
+import React, { useCallback, useRef, useState, useEffect } from 'react'
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import LoginBottomSheet from '../components/bottomSheet/loginBottomSheet/loginBottomSheet';
 import ZoundLogoSvg from '../../assets/zound.svg'
@@ -9,29 +9,28 @@ const AuthPage = () => {
 
     const loginBottomSheetRef = useRef(null);
     const navigation = useNavigation();
-    const [isSelected, setSelection] = useState(false);
 
     useFocusEffect(
-        useCallback(() => {
-            presentLoginBottomSheet();
+        useCallback( async () => {
+
+            presentBottomSheet()
 
             return () => {
                 // Your cleanup logic
                 console.log('Screen is unfocused');
             };
-
-        }, []) // Include navigation in the dependencies if you are using it inside your function
+        }, [])
     );
 
-    const presentLoginBottomSheet = async () => {
+    const presentBottomSheet = async () => {
         const access_token = await AsyncStorage.getItem('accessToken');
-
-        if (!access_token) {
+        console.log(access_token)
+        if (access_token === null) {
             loginBottomSheetRef.current?.present();
         } else {
-            navigation.navigate('TabNav');
+            navigation.navigate('TabNav')
         }
-    };
+    }
 
     return (
         <>
@@ -43,7 +42,7 @@ const AuthPage = () => {
                 <View style={styles.section}>
                     <Text>Synchroniser votre service de streaming préféré afin de profiter pleinement à notre expérience: </Text>
                     <TouchableOpacity style={styles.button2} onPress={() => navigation.navigate('AuthPage')}>
-                        <Text style={styles.buttonText2} onPress={presentLoginBottomSheet}>Synchroniser</Text>
+                        <Text style={styles.buttonText2} onPress={() => presentBottomSheet()}>Synchroniser</Text>
                     </TouchableOpacity>
                     <LoginBottomSheet loginBottomSheetRef={loginBottomSheetRef} />
                 </View>

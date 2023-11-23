@@ -1,11 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, Button, Image, TouchableOpacity, Touchable, Alert } from "react-native"
+import { View, Text, StyleSheet, Button, Image, TouchableOpacity, Touchable, Alert, SafeAreaView } from "react-native"
 import { Avatar, List } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native';
 import ZoundLogoSvg from '../../assets/zound.svg'
-
-
 
 const AccountPage = ({ userLogged }) => {
 
@@ -30,7 +28,6 @@ const AccountPage = ({ userLogged }) => {
             await AsyncStorage.removeItem('accessToken');
             await AsyncStorage.removeItem('refreshToken');
             await AsyncStorage.removeItem('spotifyUser')
-            setSpotifyUser("")
             // Optionally, you might want to reset some state or trigger additional actions
 
             // Navigate to the login or home screen
@@ -44,8 +41,7 @@ const AccountPage = ({ userLogged }) => {
     console.log({ userLogged: userLogged })
 
     return (
-        <>
-
+        <SafeAreaView style={styles.safeAreaView}>
             <View style={styles.container}>
                 <View style={styles.header}>
                     <ZoundLogoSvg />
@@ -69,7 +65,7 @@ const AccountPage = ({ userLogged }) => {
                     )}
                     <View style={styles.wrapbutton}>
                         {!spotifyUser &&
-                            <TouchableOpacity style={styles.button2} onPress={() => navigation.navigate('AuthPage')}>
+                            <TouchableOpacity style={styles.button2} onPress={() => navigation.navigate('LoginPage')}>
                                 <Text style={styles.buttonText2}>Synchroniser</Text>
                             </TouchableOpacity>
                         }
@@ -79,13 +75,17 @@ const AccountPage = ({ userLogged }) => {
                     </View>
                 </View>
             </View>
-        </>
-
+        </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
+    safeAreaView: {
+        flex: 1, 
+        backgroundColor: 'white'
+    },
     container: {
+        flex: 1,
         backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',

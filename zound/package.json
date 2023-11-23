@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
+    "start": "expo start --reset-cache",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web"
@@ -29,6 +29,9 @@
     "react": "18.2.0",
     "react-cookie": "^6.1.1",
     "react-native": "^0.72.6",
+    "react-native-bluetooth-classic": "^1.60.0-rc.30",
+    "react-native-bluetooth-serial": "^1.0.0-rc1",
+    "react-native-bluetooth-serial-next": "^1.2.3",
     "react-native-cookies": "^3.3.0",
     "react-native-fontawesome": "^7.0.0",
     "react-native-gesture-handler": "~2.12.0",

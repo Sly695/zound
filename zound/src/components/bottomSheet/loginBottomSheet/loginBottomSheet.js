@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useEffect, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { BottomSheetModal, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { SafeAreaView, Text, View, StyleSheet } from 'react-native';
@@ -20,6 +20,9 @@ const LoginBottomSheet = ({ loginBottomSheetRef }) => {
     )
   }, []);
 
+
+
+
   async function handleNavigationStateChange(navState) {
     const fetchAPI = navState.url
     const rawResponse = await fetch(fetchAPI);
@@ -29,9 +32,11 @@ const LoginBottomSheet = ({ loginBottomSheetRef }) => {
       await AsyncStorage.setItem('accessToken', response.access_token)
       await AsyncStorage.setItem('refreshToken', response.refresh_token)
       navigation.navigate('TabNav')
+      loginBottomSheetRef.current.close();
 
     }
   };
+
 
 
 
@@ -47,14 +52,15 @@ const LoginBottomSheet = ({ loginBottomSheetRef }) => {
       >
         <SafeAreaView style={styles.container} >
           <WebView
-            incognito={true}
+
             source={{ uri: 'http://192.168.1.17:3000/login' }}
             onNavigationStateChange={handleNavigationStateChange}
             startInLoadingState
             useWebKit={true}
             style={styles.webview}
+            incognito={true}
           /* Does not store any data within the lifetime of the WebView. */
-          ><Text>OUI</Text></WebView>
+          />
         </SafeAreaView>
       </BottomSheetModal>
     </View>
