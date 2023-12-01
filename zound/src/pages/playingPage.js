@@ -10,6 +10,7 @@ import scanDevices from '../utils/useBluetooth'
 import RNBluetoothClassic, {
     BluetoothDevice
 } from 'react-native-bluetooth-classic';
+import { MultipeerConnectivity } from 'react-native-multipeer';
 
 const PlayingPage = () => {
 
@@ -18,9 +19,14 @@ const PlayingPage = () => {
     const [songPlaying, setSongPlaying] = useState(false)
     const [available, setAvailable] = useState()
     const [refreshing, setRefreshing] = useState(false);
+    const [dataSource, setDataSource] = useState([]);
 
     const trackBottomSheetRef = useRef(null);
     const loginBottomSheetRef = useRef(null);
+
+    const invite = (peer) => {
+        MultipeerConnectivity.invite(peer.id);
+    };
 
     const onRefresh = useCallback(() => {
         setRefreshing(true);
@@ -42,11 +48,43 @@ const PlayingPage = () => {
         scanDevices()
     }, [])
 
+    useEffect(() => {
+        const onChange = () => {
+            setDataSource(getStateFromSources().dataSource);
+        };
+
+        MultipeerConnectivity.on('peerFound', onChange);
+        MultipeerConnectivity.on('peerLost', onChange);
+        MultipeerConnectivity.on('invite', (event) => {
+            // Automatically accept invitations
+            MultipeerConnectivity.rsvp(event.invite.id, true);
+        });
+        MultipeerConnectivity.on('peerConnected', (event) => {
+            alert(`${event.peer.id} connected!`);
+        });
+
+        MultipeerConnectivity.advertise('channel1', {
+            name: `User-${Math.round(1e6 * Math.random())}`,
+        });
+        MultipeerConnectivity.browse('channel1');
+        
+
+        return () => {
+            MultipeerConnectivity.removeAllListeners();
+        };
+    }, []);
+
 
     const showModal = async (userTrack) => {
         setSelectSong(userTrack);
         await trackBottomSheetRef.current?.present();
         await trackBottomSheetRef.current.present();
+    };
+
+    const getStateFromSources = () => {
+        return {
+            dataSource: MultipeerConnectivity.getAllPeers(),
+        };
     };
 
     return (
@@ -74,7 +112,7 @@ const PlayingPage = () => {
 
                     <TrackBottomSheet selectSong={selectSong} trackBottomSheetRef={trackBottomSheetRef} />
                     <View style={[styles.trackUser, { display: songPlaying ? "block" : "none" }]}>
-                        <UserTrackList showModal={showModal} refreshing={refreshing} setSongPlaying={setSongPlaying} selectSong={selectSong} />
+                        <UserTrackList showModal={showModal} refreshing={refreshing} setSongPlaying={setSongPlaying} />
                     </View>
                 </View>
                 <LoginBottomSheet loginBottomSheetRef={loginBottomSheetRef} />
@@ -117,24 +155,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#C9F701',
         display: "flex",
         bottom: -10,
-    },
-    button: {
-        backgroundColor: '#C9F701', // Change the color as needed
-        padding: 10,
-        borderRadius: 5,
-        alignItems: "center",
-        justifyContent: "center",
-        width: 150,
-        height: 50,
-        margin: 10,
-        padding: 10,
-        borderRadius: 5,
-    },
-    buttonwrap: {
-        flexDirection: 'row',
-        height: "10%",
-        justifyContent: 'flex-end',
-        alignItems: 'flex-end'
     },
 });
 

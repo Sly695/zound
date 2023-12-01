@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, Button, Image, TouchableOpacity, Touchable, Ale
 import { Avatar, List } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native';
 import ZoundLogoSvg from '../../assets/zound.svg'
+import PrimaryButton from '../components/button/primaryButton';
 
 const AccountPage = ({ userLogged }) => {
 
@@ -69,9 +70,7 @@ const AccountPage = ({ userLogged }) => {
                                 <Text style={styles.buttonText2}>Synchroniser</Text>
                             </TouchableOpacity>
                         }
-                        <TouchableOpacity style={styles.button} onPress={handleLogout}>
-                            <Text style={styles.buttonText1}>Log Out</Text>
-                        </TouchableOpacity>
+                    <PrimaryButton text="Désynchroniser" handleFunction={handleLogout} />
                     </View>
                 </View>
             </View>

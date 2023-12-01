@@ -4,6 +4,7 @@ import React, { useCallback, useRef, useState, useEffect } from 'react'
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import LoginBottomSheet from '../components/bottomSheet/loginBottomSheet/loginBottomSheet';
 import ZoundLogoSvg from '../../assets/zound.svg'
+import SecondaryButton from '../components/button/secondaryButton';
 
 const AuthPage = () => {
 
@@ -41,9 +42,7 @@ const AuthPage = () => {
                 </View>
                 <View style={styles.section}>
                     <Text>Synchroniser votre service de streaming préféré afin de profiter pleinement à notre expérience: </Text>
-                    <TouchableOpacity style={styles.button2} onPress={() => navigation.navigate('AuthPage')}>
-                        <Text style={styles.buttonText2} onPress={() => presentBottomSheet()}>Synchroniser</Text>
-                    </TouchableOpacity>
+                    <SecondaryButton text="Synchroniser" handleFunction={() => loginBottomSheetRef.current?.present()} />
                     <LoginBottomSheet loginBottomSheetRef={loginBottomSheetRef} />
                 </View>
             </View>
@@ -67,6 +66,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        borderWidth: 1,
+        borderColor: "black",
     },
     header: {
         height: "25%",
@@ -77,7 +78,9 @@ const styles = StyleSheet.create({
         height: "80%",
         width: '100%',
         padding: 20,
-        alignItems: "center"
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingBottom: 100
     },
     text: {
         textAlign: "center",
@@ -99,49 +102,7 @@ const styles = StyleSheet.create({
     display_name: {
         fontSize: 20,
         textAlign: 'center'
-    },
-    wrapbutton: {
-        width: "100%",
-        position: "absolute",
-        alignItems: "center",
-        bottom: 50
-    },
-    button: {
-        backgroundColor: '#C9F701', // Change the color as needed
-        fontStyle: "white",
-        padding: 10,
-        borderRadius: 5,
-        alignItems: "center",
-        justifyContent: "center",
-        width: 150,
-        height: 50,
-        margin: 10,
-        padding: 10,
-        borderRadius: 5,
-        borderWidth: 1,
-        borderColor: "#000"
-    },
-    buttonText2: {
-        color: '#FFF',
-    },
-    button2: {
-        backgroundColor: '#000', // Change the color as needed
-        fontStyle: "white",
-        padding: 10,
-        borderRadius: 5,
-        alignItems: "center",
-        justifyContent: "center",
-        width: 150,
-        height: 50,
-        margin: 10,
-        padding: 10,
-        borderRadius: 5,
-        borderWidth: 1,
-        borderColor: "#000",
-        position: "absolute",
-        bottom: 100,
-    },
-
+    }
 
 });
 

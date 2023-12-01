@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { List } from 'react-native-paper'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const UserTrackList = ({ showModal, setSongPlaying, selectSong, refreshing }) => {
+const UserTrackList = ({ showModal, setSongPlaying, refreshing }) => {
 
     const [userTrack, setUserTrack] = useState();
 
@@ -29,13 +29,13 @@ const UserTrackList = ({ showModal, setSongPlaying, selectSong, refreshing }) =>
                     const response = await rawResponse.json()
                     await AsyncStorage.setItem('accessToken', response.access_token)
                     await AsyncStorage.setItem('refreshToken', response.refresh_token)
-                } else {
+                } else if(response.status === 304){
                     console.error(response)
                 }
             }
 
-        } catch (error) {
-            console.log({"error": error})
+        } catch ({error, status, body}) {
+            console.log({"error": error, "status": status, "body": body})
         }
     }
 
