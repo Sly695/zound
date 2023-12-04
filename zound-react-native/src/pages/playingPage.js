@@ -10,7 +10,6 @@ import scanDevices from '../utils/useBluetooth'
 import RNBluetoothClassic, {
     BluetoothDevice
 } from 'react-native-bluetooth-classic';
-import { MultipeerConnectivity } from 'react-native-multipeer';
 
 const PlayingPage = () => {
 
@@ -23,10 +22,6 @@ const PlayingPage = () => {
 
     const trackBottomSheetRef = useRef(null);
     const loginBottomSheetRef = useRef(null);
-
-    const invite = (peer) => {
-        MultipeerConnectivity.invite(peer.id);
-    };
 
     const onRefresh = useCallback(() => {
         setRefreshing(true);
@@ -48,45 +43,12 @@ const PlayingPage = () => {
         scanDevices()
     }, [])
 
-    useEffect(() => {
-        const onChange = () => {
-            setDataSource(getStateFromSources().dataSource);
-        };
-
-        MultipeerConnectivity.on('peerFound', onChange);
-        MultipeerConnectivity.on('peerLost', onChange);
-        MultipeerConnectivity.on('invite', (event) => {
-            // Automatically accept invitations
-            MultipeerConnectivity.rsvp(event.invite.id, true);
-        });
-        MultipeerConnectivity.on('peerConnected', (event) => {
-            alert(`${event.peer.id} connected!`);
-        });
-
-        MultipeerConnectivity.advertise('channel1', {
-            name: `User-${Math.round(1e6 * Math.random())}`,
-        });
-        MultipeerConnectivity.browse('channel1');
-        
-
-        return () => {
-            MultipeerConnectivity.removeAllListeners();
-        };
-    }, []);
-
-
     const showModal = async (userTrack) => {
         setSelectSong(userTrack);
         await trackBottomSheetRef.current?.present();
         await trackBottomSheetRef.current.present();
     };
-
-    const getStateFromSources = () => {
-        return {
-            dataSource: MultipeerConnectivity.getAllPeers(),
-        };
-    };
-
+    
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView

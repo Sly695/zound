@@ -18,14 +18,14 @@ const UserTrackList = ({ showModal, setSongPlaying, refreshing }) => {
             const refreshToken = await AsyncStorage.getItem('refreshToken')
 
             if (accessToken && refreshToken) {
-                const rawResponse = await fetch(`http://192.168.1.17:3000/getCurrentlyPlaying?access_token=${accessToken}&refresh_token=${refreshToken}`);
+                const rawResponse = await fetch(`http://192.168.1.19:3000/getCurrentlyPlaying?access_token=${accessToken}&refresh_token=${refreshToken}`);
                 const response = await rawResponse.json()
 
                 if (response.status === 200) {
                     setSongPlaying(true)
                     setUserTrack(response)
                 } else if (response.status === 401) {
-                    const rawResponse = await fetch(`http://192.168.1.17:3000/refresh_token?refresh_token=${refreshToken}`);
+                    const rawResponse = await fetch(`http://192.168.1.19:3000/refresh_token?refresh_token=${refreshToken}`);
                     const response = await rawResponse.json()
                     await AsyncStorage.setItem('accessToken', response.access_token)
                     await AsyncStorage.setItem('refreshToken', response.refresh_token)
