@@ -71,7 +71,6 @@ router.get('/callback', async function (req, res, next) {
   }
 
   request.post(authOptions, function (error, response, body) {
-    console.log(error, response.statusCode)
     if (!error && response.statusCode === 200) {
 
       let access_token = body.access_token, refresh_token = body.refresh_token, expires_in = body.expires_in;
@@ -117,8 +116,6 @@ router.get('/getToken', (req, res) => {
 router.get('/getCurrentlyPlaying', (req, res) => {
   const access_token = req.query.access_token
   const refresh_token = req.query.refresh_token;
-  console.log(access_token)
-  console.log(refresh_token)
   const trackEndpoint = "https://api.spotify.com/v1/me/player/currently-playing?market=FR";
   const options = {
     url: trackEndpoint,
