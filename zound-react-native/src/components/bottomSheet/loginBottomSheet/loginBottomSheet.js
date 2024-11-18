@@ -20,15 +20,12 @@ const LoginBottomSheet = ({ loginBottomSheetRef }) => {
     )
   }, []);
 
-
-
-
+  //onNavigationStageChange = capte les changements d'état dans la navigation ex: chargement d'une nouvelle URL ou chargement d'une page.
   async function handleNavigationStateChange(navState) {
     const fetchAPI = navState.url
     const rawResponse = await fetch(fetchAPI);
     const response = await rawResponse.json();
     if (response) {
-      console.log(response);
       await AsyncStorage.setItem('spotifyUser', JSON.stringify(response))
       await AsyncStorage.setItem('accessToken', response.access_token)
       await AsyncStorage.setItem('refreshToken', response.refresh_token)
@@ -37,9 +34,6 @@ const LoginBottomSheet = ({ loginBottomSheetRef }) => {
     }
   };
 
-
-
-
   return (
     <View style={styles.BottomSheetContainer} >
       <BottomSheetModal
@@ -47,18 +41,19 @@ const LoginBottomSheet = ({ loginBottomSheetRef }) => {
         snapPoints={snapPoints}
         backdropComponent={renderBackdrop}
         backgroundStyle={{
-          backgroundColor: '#000'
+          backgroundColor: '#121212',
         }}
       >
         <SafeAreaView style={styles.container} >
+          {/* Call to /login to have token and stock him on AsyncStorage  */}
           <WebView
-
             source={{ uri: 'http://192.168.1.53:3000/login' }}
             onNavigationStateChange={handleNavigationStateChange}
             startInLoadingState
             useWebKit={true}
-            style={styles.webview}
             incognito={true}
+            // Tips for encountering white background
+            style={{ flex: 1, backgroundColor: 'transparent' }}
           /* Does not store any data within the lifetime of the WebView. */
           />
         </SafeAreaView>
@@ -67,11 +62,12 @@ const LoginBottomSheet = ({ loginBottomSheetRef }) => {
   )
 }
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#121212',
   },
-
   webview: {
     backgroundColor: "#000",
   },
@@ -80,13 +76,14 @@ const styles = StyleSheet.create({
     padding: 24,
     position: 'absolute',
     bottom: 0,
-    width: "100%"
+    width: "100%",
+    backgroundColor: "#121212",
   },
   contentContainer: {
     flex: 1,
     padding: 20,
     boxSizing: 'border-box',
-    backgroundColor: "#FFF",
+    backgroundColor: "#000",
   }
 });
 

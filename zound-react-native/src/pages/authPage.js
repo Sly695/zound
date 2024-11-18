@@ -15,7 +15,6 @@ const AuthPage = () => {
         useCallback(() => {
             const handlePresentBottomSheet = async () => {
                 const access_token = await AsyncStorage.getItem('accessToken');
-                console.log(access_token);
                 if (access_token === null) {
                     loginBottomSheetRef.current?.present();
                 } else {
@@ -32,15 +31,15 @@ const AuthPage = () => {
         }, [navigation])
     );
 
-    const presentBottomSheet = async () => {
-        const access_token = await AsyncStorage.getItem('accessToken');
-        console.log(access_token)
-        if (access_token === null) {
-            loginBottomSheetRef.current?.present();
-        } else {
-            navigation.navigate('TabNav')
-        }
-    }
+    // Idk what it is but maybe we'll used it 
+    // const presentBottomSheet = async () => {
+    //     const access_token = await AsyncStorage.getItem('accessToken');
+    //     if (access_token === null) {
+    //         loginBottomSheetRef.current?.present();
+    //     } else {
+    //         navigation.navigate('TabNav')
+    //     }
+    // }
 
     return (
         <>

@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import BottomSheet, { BottomSheetModal, BottomSheetBackdrop, BottomSheetScrollView } from '@gorhom/bottom-sheet';
-import { Linking, Text, Button, View, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import React, { useCallback, useMemo } from 'react'
+import { BottomSheetModal, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import { Linking, Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native'
 
 const TrackBottomSheet = ({ selectSong, trackBottomSheetRef }) => {
 
@@ -16,6 +16,7 @@ const TrackBottomSheet = ({ selectSong, trackBottomSheetRef }) => {
         )
     }, []);
 
+    // DeepLinking // Linking.canOpenUrl : vérification sur l'appli est installée.
     async function redirectModal(externalUrl) {
         await Linking.openURL(externalUrl);
     }
@@ -29,22 +30,21 @@ const TrackBottomSheet = ({ selectSong, trackBottomSheetRef }) => {
                         snapPoints={snapPoints}
                         backdropComponent={renderBackdrop}
                         backgroundStyle={{
-                            backgroundColor: '#C9F701'
+                            backgroundColor: '#C9F701',
                         }}
                     >
                         <View style={styles.contentContainer}>
-                            <Image source={{ uri: selectSong.song.item.album.images[0].url }} style={styles.coverModal} />
+                            <Image source={{ uri: selectSong.song?.item?.album.images[0].url }} style={styles.coverModal} />
                             <View style={styles.songdetails}>
-                                <Text style={styles.songartist}>{selectSong.song.item.artists[0].name}</Text>
-                                <Text style={styles.songname}>{selectSong.song.item.name}</Text>
+                                <Text style={styles.songartist}>{selectSong.song?.item?.artists[0].name}</Text>
+                                <Text style={styles.songname}>{selectSong.song?.item?.name}</Text>
                             </View>
-                            {/* Cette fonctionnalité est destiné aux sons joués pour les autres utilisateurs
-                                <View style={styles.buttonwrap}>
-                                    <TouchableOpacity style={styles.button} onPress={() => redirectModal(selectSong.song.item.uri)}>
-                                        <Text style={styles.buttonText2}>Écouter</Text>
-                                    </TouchableOpacity>
-                                </View> 
-                            */}
+
+                            <View style={styles.buttonwrap}>
+                                <TouchableOpacity style={styles.button} onPress={() => redirectModal(selectSong.song.item.uri)}>
+                                    <Text style={styles.buttonText2}>Écouter</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </BottomSheetModal>
                 </View>
@@ -56,6 +56,9 @@ const TrackBottomSheet = ({ selectSong, trackBottomSheetRef }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1
+    },
+    webview: {
+
     },
     BottomSheetContainer: {
         flex: 1,

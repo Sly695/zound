@@ -14,6 +14,7 @@ const UserTrackList = ({ showModal, setSongPlaying, refreshing }) => {
     async function getCurrentlyPlaying() {
 
         try {
+            // Use token on asyncStorage and used it to call /getCurrentlyPlayingRoute
             const accessToken = await AsyncStorage.getItem('accessToken')
             const refreshToken = await AsyncStorage.getItem('refreshToken')
 

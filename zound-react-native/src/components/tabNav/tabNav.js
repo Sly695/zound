@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import AccountPage from '../../pages/accountPage';
 import PlayingPage from '../../pages/playingPage';
+import { routes } from '../../constantes/routes';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -16,12 +17,15 @@ const TabNav = ({ modalAuth, setModalAuth }) => {
                 tabBarIcon: ({ color }) => {
                     let iconName;
 
-
-                    if (route.name === 'Liste') {
-                        iconName = 'list';
-                    } else if (route.name === 'Compte') {
+                    switch (route.name) {
+                        case routes.MUSIC :
+                        iconName = 'musical-note-outline';
+                        break;
+                        case routes.ACCOUNT :
                         iconName = 'person-outline';
-                    } 
+                        default:
+                            break;
+                    }
 
                     return <Ionicons name={iconName} size={25} color={color} />;
                 },
@@ -35,8 +39,9 @@ const TabNav = ({ modalAuth, setModalAuth }) => {
                 inactiveTintColor: '#dfe6e9',
             }}
         >
-            <Tab.Screen name="Liste" modalAuth={modalAuth} setModalAuth={setModalAuth} component={PlayingPage} />
-            <Tab.Screen name="Compte" component={AccountPage} />
+            {/* <Tab.Screen name="Chat" component={ChatPage} /> */}
+            <Tab.Screen name="Music" modalAuth={modalAuth} setModalAuth={setModalAuth} component={PlayingPage} />
+            <Tab.Screen name="Account" component={AccountPage} />
         </Tab.Navigator>
     );
 

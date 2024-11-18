@@ -1,28 +1,20 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react'
+import React, { useRef, useState, useCallback } from 'react'
 import { View, StyleSheet, ScrollView, RefreshControl, SafeAreaView } from 'react-native'
-import { USER_LIST } from '../constants/tracks';
+import { USER_LIST } from '../constantes/tracks';
 import TrackBottomSheet from '../components/bottomSheet/trackBottomSheet/trackBottomSheet';
-import LoginBottomSheet from '../components/bottomSheet/loginBottomSheet/loginBottomSheet';
 import OtherTrackList from '../components/trackList/otherTrackList/othertrackList';
 import UserTrackList from '../components/trackList/userTrackList/userTrackList';
 import ZoundLogoSvg from '../../assets/zound.svg'
-import scanDevices from '../utils/useBluetooth'
-import RNBluetoothClassic, {
-    BluetoothDevice
-} from 'react-native-bluetooth-classic';
 
 const PlayingPage = () => {
 
-
     const [selectSong, setSelectSong] = useState("");
     const [songPlaying, setSongPlaying] = useState(false)
-    const [available, setAvailable] = useState()
     const [refreshing, setRefreshing] = useState(false);
-    const [dataSource, setDataSource] = useState([]);
 
     const trackBottomSheetRef = useRef(null);
-    const loginBottomSheetRef = useRef(null);
 
+    // Useful ? 
     const onRefresh = useCallback(() => {
         setRefreshing(true);
         setTimeout(() => {
@@ -30,25 +22,13 @@ const PlayingPage = () => {
         }, 500);
     }, []);
 
-    const scanDevices = async () => {
-        try {
-            const available = await RNBluetoothClassic.list();
-            setAvailable({ available })
-        } catch (err) {
-            // Handle accordingly
-        }
-    };
-
-    useEffect(() => {
-        //scanDevices()
-    }, [])
-
+    //Display trackBottomSheet and transfer data song to him.
     const showModal = async (userTrack) => {
         setSelectSong(userTrack);
         await trackBottomSheetRef.current?.present();
         await trackBottomSheetRef.current.present();
     };
-    
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView
@@ -60,24 +40,23 @@ const PlayingPage = () => {
                     <ZoundLogoSvg />
                 </View>
                 <View style={styles.section}>
+                    {/* Songs playing by near users */}
                     <View style={styles.trackList}>
                         {
-
                             USER_LIST.map((song, i) => {
                                 return (
-                                    <OtherTrackList song={song} key={i} />
+                                    <OtherTrackList song={song} key={i} showModal={showModal} />
                                 )
                             })
-
                         }
                     </View>
-
+                    {/* The trackbottomsheet display by cliking UserTrackList Component*/}
                     <TrackBottomSheet selectSong={selectSong} trackBottomSheetRef={trackBottomSheetRef} />
+                    {/* Song playing by the main user */}
                     <View style={[styles.trackUser, { display: songPlaying ? "block" : "none" }]}>
                         <UserTrackList showModal={showModal} refreshing={refreshing} setSongPlaying={setSongPlaying} />
                     </View>
                 </View>
-                <LoginBottomSheet loginBottomSheetRef={loginBottomSheetRef} />
             </ScrollView>
         </SafeAreaView>
 

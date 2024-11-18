@@ -19,8 +19,6 @@ const AccountPage = ({ userLogged }) => {
         const userSpotify = await AsyncStorage.getItem("spotifyUser")
         const userParsed = await JSON.parse(userSpotify)
         setSpotifyUser(userParsed)
-        console.log(spotifyUser)
-
     }
 
     const handleLogout = async () => {
@@ -38,8 +36,6 @@ const AccountPage = ({ userLogged }) => {
             Alert.alert('Error', 'An error occurred during logout.');
         }
     };
-
-    console.log({ userLogged: userLogged })
 
     return (
         <SafeAreaView style={styles.safeAreaView}>
