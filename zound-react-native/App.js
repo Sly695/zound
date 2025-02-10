@@ -7,9 +7,10 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { View } from 'react-native';
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import AuthPage from "./src/pages/authPage";
-import { useState } from 'react'
+import { BleManager } from "react-native-ble-plx";
 
 const Stack = createStackNavigator();
+
 
 export default function App() {
 

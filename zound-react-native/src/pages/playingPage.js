@@ -6,6 +6,7 @@ import OtherTrackList from '../components/trackList/otherTrackList/othertrackLis
 import UserTrackList from '../components/trackList/userTrackList/userTrackList';
 import ZoundLogoSvg from '../../assets/zound.svg'
 
+
 const PlayingPage = () => {
 
     const [selectSong, setSelectSong] = useState("");
