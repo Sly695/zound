@@ -47,7 +47,7 @@ const LoginBottomSheet = ({ loginBottomSheetRef }) => {
         <SafeAreaView style={styles.container} >
           {/* Call to /login to have token and stock him on AsyncStorage  */}
           <WebView
-            source={{ uri: 'http://192.168.1.53:3000/login' }}
+            source={{ uri: 'http://localhost:3000/login' }}
             onNavigationStateChange={handleNavigationStateChange}
             startInLoadingState
             useWebKit={true}
